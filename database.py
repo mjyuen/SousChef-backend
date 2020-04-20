@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from flask_cors import CORS
-
+from sqlalchemy import func, select
 import os
 import hashlib
 import json
@@ -31,33 +31,67 @@ ma = Marshmallow(app)
 
 class TrickyIngredient(db.Model):
     id = db.Column(db.Integer, primary_key = True)
-    original = db.Column(db.String, unique = False)
-    rewritten = db.Column(db.String, unique = False)
+    text = db.Column(db.Unicode, unique = False)
 
-    def __init__(self, original, rewritten): 
-        self.original = original
-        self.rewritten = rewritten
+    def __init__(self, text): 
+        self.text = text
 
 class TrickyIngredientSchema(ma.Schema):
     class Meta:
-        fields = ('id', 'original', 'rewritten')
+        fields = ('id', 'text')
 
 trickyingredient_schema = TrickyIngredientSchema()
 trickyingredients_schema = TrickyIngredientSchema(many = True)
+
 @app.route("/tricky", methods=["POST"])
 def tricky_add():
-    original = request.json['original']
-    rewritten = request.json['rewritten']
+    text = request.json['text']
 
-    new_trickyingredient = TrickyIngredient(original, rewritten)
-    print(new_trickyingredient.original)
-    print(new_trickyingredient.rewritten)
+    new_trickyingredient = TrickyIngredient(text)
 
     db.session.add(new_trickyingredient)
     db.session.commit()	
     
     #return jsonify({"original": new_trickyingredient.original, "rewritten": new_trickyingredient.rewritten})
     return trickyingredient_schema.jsonify(new_trickyingredient)
+
+@app.route("/gettricky", methods=["GET"])
+def tricky_get():
+    ingredient = TrickyIngredient.query.order_by(func.random()).first()
+    print(ingredient)
+    return trickyingredient_schema.jsonify(ingredient)
+
+#---------------------------------------------------------------------------------------------------------------------------------------------
+
+class FixedIngredient(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    original = db.Column(db.Unicode, unique = False)
+    rewritten = db.Column(db.Unicode, unique = False)
+
+    def __init__(self, original, rewritten): 
+        self.original = original
+        self.rewritten = rewritten
+
+class FixedIngredientSchema(ma.Schema):
+    class Meta:
+        fields = ('id', 'original', 'rewritten')
+
+fixedingredient_schema = FixedIngredientSchema()
+fixedingredients_schema = FixedIngredientSchema(many = True)
+@app.route("/fixed", methods=["POST"])
+def fixed_add():
+    original = request.json['original']
+    rewritten = request.json['rewritten']
+
+    new_fixedingredient = FixedIngredient(original, rewritten)
+    print(new_fixedingredient.original)
+    print(new_fixedingredient.rewritten)
+
+    db.session.add(new_fixedingredient)
+    db.session.commit()	
+    
+    #return jsonify({"original": new_trickyingredient.original, "rewritten": new_trickyingredient.rewritten})
+    return fixedingredient_schema.jsonify(new_fixedingredient)
 
 db.create_all()
 #---------------------------------------------------------------------------------------------------
