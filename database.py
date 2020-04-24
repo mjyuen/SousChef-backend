@@ -6,7 +6,7 @@ from sqlalchemy import func, select
 import os
 import hashlib
 import json
-
+from recipeparsing import parse
 from flask_heroku import Heroku
 
 basedir = os.path.abspath(os.path.dirname(__file__))
