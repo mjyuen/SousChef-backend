@@ -8,7 +8,7 @@ def parse(text):
       comment = ""
       name = ""
     
-    unitSet = ([ "pinch", "pinches" "dash", "dashes" "teaspoon", "teaspoons", "tsp", "tablespoon", "tablespoons", "tbsp", "can", "cans", "cup", "cups", "slices", "slice", "dollop", "dollops", "scoops", "scoops", "gram", "grams", "containers", "container", "packets", "packet", "slice", "slices", "liters", "liter", "pounds", "pound", "lbs", "bunch", "bunches", "lb", "sprigs", "sprig", "ounces", "oz", "ounce", "pints", "pint", "gallon", "gallons", "medium", "large", "small", "branch" ])
+    unitSet = ([ "pinch", "pinches" "dash", "dashes", "teaspoon", "teaspoons", "tsp", "tablespoon", "tablespoons", "tbsp", "can", "cans", "cup", "cups", "slices", "slice", "dollop", "dollops", "scoops", "scoops", "gram", "grams", "containers", "container", "packets", "packet", "slice", "slices", "liters", "liter", "pounds", "pound", "lbs", "bunch", "bunches", "lb", "sprigs", "sprig", "ounces", "oz", "ounce", "pints", "pint", "gallon", "gallons", "medium", "large", "small", "branch" ])
 
     #testInput = "1 pinch of salt"
     #testInput = "1 stick of butter"
@@ -41,7 +41,7 @@ def parse(text):
     unitIndex = -1
     ind = 0
     for word in splitTest:
-      foundAlternate = re.search("\/\d+", word)
+      foundAlternate = re.search("\D\/\d+", word)
       if foundAlternate:
         if splitTest[ind + 1] in unitSet:
           slashSplit = splitTest[ind].split('/', 1)
@@ -100,7 +100,7 @@ def parse(text):
       match2 = re.search(".*ed$", word)
       if match2 and (word != "red"):
         ingredient.comment = match2.string
-        commentIndex = i + 1
+        commentIndex = i
         break
 
     # Get name of ingredient
@@ -109,14 +109,15 @@ def parse(text):
     ingredient.name = str.strip(ingredient.name)
 
     print("Unit: " + ingredient.unit)
-    print("Quantity: " + ingredient.quantity)
+    print("Quantity: " + str(ingredient.quantity))
     print("Comment: " + ingredient.comment)
     print("Name: " + ingredient.name)
     result = {"quantity": ingredient.quantity, "unit": ingredient.unit, "name": ingredient.name, "comment": ingredient.comment}
     
     return(result)
-  except:
-    result = {"quantity": "Error parsing", "unit": "", "name": "", "comment": ""}
+  except Exception as e:
+    print(str(e))
+    result = {"quantity": "error parsing", "unit": "", "name": "", "comment": ""}
     return(result)
 
 def main():

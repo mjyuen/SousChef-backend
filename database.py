@@ -168,9 +168,11 @@ def label_add():
 
 @app.route("/parsetext", methods=["POST"])
 def text_parse():
-    text = request.json['text']
-    result = parse(text)
-    print(result)
+    lines = request.json['text']
+    result = []
+    for line in lines:
+        print(line)
+        result.append(parse(line))
 
     return jsonify(result)     
 
