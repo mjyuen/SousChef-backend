@@ -7,7 +7,7 @@ def parse(text):
     comment = ""
     name = ""
 
-  unitSet = ([ "pinch", "pinches" "dash", "dashes" "teaspoon", "teaspoons", "tsp", "tablespoon", "tablespoons", "tbsp", "cup", "cups", "slices", "slice", "dollop", "dollops", "scoops", "scoops", "gram", "grams", "containers", "container", "packets", "packet", "slice", "slices", "liters", "liter", "pounds", "pound", "lbs", "bunch", "bunches", "lb", "sprigs", "sprig", "ounces", "oz", "ounce", "pints", "pint", "gallon", "gallons", "medium", "large", "small", "branch" ])
+  unitSet = ([ "pinch", "pinches" "dash", "dashes" "teaspoon", "teaspoons", "tsp", "tablespoon", "tablespoons", "tbsp", "can", "cans", "cup", "cups", "slices", "slice", "dollop", "dollops", "scoops", "scoops", "gram", "grams", "containers", "container", "packets", "packet", "slice", "slices", "liters", "liter", "pounds", "pound", "lbs", "bunch", "bunches", "lb", "sprigs", "sprig", "ounces", "oz", "ounce", "pints", "pint", "gallon", "gallons", "medium", "large", "small", "branch" ])
 
   #testInput = "1 pinch of salt"
   #testInput = "1 stick of butter"
@@ -97,7 +97,7 @@ def parse(text):
       commentIndex = i + 1
       break
     match2 = re.search(".*ed$", word)
-    if match2:
+    if match2 and (word != "red"):
       ingredient.comment = match2.string
       commentIndex = i + 1
       break
