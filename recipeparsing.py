@@ -94,12 +94,18 @@ def parse(text):
       word = splitTest[i]
       match = re.search(".*ly$", word)
       if match:
-        ingredient.comment = match.string + " " + splitTest[i + 1]
+        if ingredient.comment:
+          ingredient.comment = ingredient.comment + ", " + match.string + " " + splitTest[i + 1]
+        else:
+          ingredient.comment = match.string + " " + splitTest[i + 1]
         commentIndex = i + 1
         break
       match2 = re.search(".*ed$", word)
       if match2 and (word != "red"):
-        ingredient.comment = match2.string
+        if ingredient.comment:
+          ingredient.comment = ingredient.comment + ", " + match2.string
+        else:
+          ingredient.comment = match2.string
         commentIndex = i
         break
 
