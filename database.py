@@ -67,14 +67,16 @@ class FixedIngredient(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     original = db.Column(db.Unicode, unique = False)
     rewritten = db.Column(db.Unicode, unique = False)
+    attempts = db.Column(db.Integer, primary_key = False)
 
-    def __init__(self, original, rewritten): 
+    def __init__(self, original, rewritten, attempts): 
         self.original = original
         self.rewritten = rewritten
+        self.attempts = attempts
 
 class FixedIngredientSchema(ma.Schema):
     class Meta:
-        fields = ('id', 'original', 'rewritten')
+        fields = ('id', 'original', 'rewritten', 'attempts')
 
 fixedingredient_schema = FixedIngredientSchema()
 fixedingredients_schema = FixedIngredientSchema(many = True)
@@ -82,10 +84,12 @@ fixedingredients_schema = FixedIngredientSchema(many = True)
 def fixed_add():
     original = request.json['original']
     rewritten = request.json['rewritten']
+    attempts = request.json['attempts']
 
-    new_fixedingredient = FixedIngredient(original, rewritten)
+    new_fixedingredient = FixedIngredient(original, rewritten, attempts)
     print(new_fixedingredient.original)
     print(new_fixedingredient.rewritten)
+    print(new_fixedingredient.attempts)
 
     db.session.add(new_fixedingredient)
     db.session.commit()	
