@@ -21,7 +21,8 @@ CORS(app)
 #app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://localhost/tigernest"
 #app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 #app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:p@localhost:5432/souschef"
+database_url = os.environ.get('DATABASE_URL',  "postgresql://postgres:p@localhost:5432/souschef")
+app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 
 heroku = Heroku(app)
 db = SQLAlchemy(app)
