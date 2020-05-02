@@ -14,14 +14,8 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__)
 
 CORS(app)
-#postgres://vhhabiabmrdtya:d2d626af16f4894a2a656de2ca8158f4414687b9b84ea08f801c2c07d774c6b8@ec2-54-243-241-62.compute-1.amazonaws.com:5432/d9d1mlh0cjs2lf
 
-#app.config['SQLALCHEMY_DATABASE_URI'] = "postgres://vhhabiabmrdtya:d2d626af16f4894a2a656de2ca8158f4414687b9b84ea08f801c2c07d774c6b8@ec2-54-243-241-62.compute-1.amazonaws.com:5432/d9d1mlh0cjs2lf"
-
-#app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://localhost/tigernest"
 #app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
-#app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
-# database_url = os.environ.get('DATABASE_URL',  "postgresql://postgres:p@localhost:5432/souschef")
 # app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 
 heroku = Heroku(app)
